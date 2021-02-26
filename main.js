@@ -26,6 +26,7 @@ bot.on('message', (message) =>{
             .then(connection =>{
                 Play(connection, Video.countdown)
             })
+            message.delete({timeout:0});
         }
         else
         {
@@ -52,6 +53,7 @@ bot.on('message', (message) =>{
             .then(connection =>{
                 Play(connection, Video.erwan)
             })
+        message.delete({timeout:0});
     }
 })
 
