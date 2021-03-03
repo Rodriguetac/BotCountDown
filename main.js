@@ -40,7 +40,7 @@ bot.on('message', (message) =>{
     {
         message.channel.send(new Discord.MessageEmbed()
                        .setTitle('Liste des commandes:')
-                       .addFields({ name: '?countdown', value:'Le bot rejoint votre channel audio et lance un compte à rebours', inline: true}))
+                       .addFields({ name: '?countdown ou ajoute une reaction 😢 à un message', value:'Le bot rejoint votre channel audio et lance un compte à rebours', inline: true}))
         .then(returnMessage =>{
             returnMessage.delete({timeout:6000});
         });
@@ -54,6 +54,28 @@ bot.on('message', (message) =>{
                 Play(connection, Video.erwan)
             })
         message.delete({timeout:0});
+    }
+})
+
+bot.on('messageReactionAdd', (reaction) =>{
+    //reaction.message.channel.send("jfioerzjfioer");
+    if (reaction.emoji.name == '😢')
+    {
+        if (reaction.message.member.voice?.channel)
+        {
+            reaction.message.member.voice.channel.join()
+            .then(connection =>{
+                Play(connection, Video.countdown)
+            })
+            //message.delete({timeout:0});
+        }
+        else
+        {
+            reaction.message.reply("Please join an audio channel first")
+            .then(returnMessage =>{
+                returnMessage.delete({timeout: 3000});
+            });
+        }
     }
 })
 
