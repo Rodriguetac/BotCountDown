@@ -91,7 +91,7 @@ function Play(connection, url)
         stream = Video.erwan;
     }
     else{
-        stream = ytdl(url, { quality: 'highestaudio', filter: 'audioonly'});
+        stream = Video.countdown;
     }
     
     const dispatcher = connection.play(stream, streamOptions);
