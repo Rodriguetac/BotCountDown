@@ -9,6 +9,8 @@ const streamOptions = {
     volume: 0.8
 }
 
+var IsCountDownRunning = false;
+
 bot.login(Config.token);
 
 bot.on('ready', () =>{
@@ -71,7 +73,7 @@ bot.on('messageReactionAdd', (reaction) =>{
         }
         else
         {
-            reaction.message.reply("Please join an audio channel first")
+            reaction.message.channel.send("Please join an audio channel first")
             .then(returnMessage =>{
                 returnMessage.delete({timeout: 3000});
             });
@@ -81,6 +83,8 @@ bot.on('messageReactionAdd', (reaction) =>{
 
 function Play(connection, url)
 {
+    if (IsCountDownRunning){ return; }
+    IsCountDownRunning = true;
     let stream;
     if (url == Video.erwan)
     {
@@ -94,5 +98,6 @@ function Play(connection, url)
 
     dispatcher.on('finish', () => {
         connection.disconnect();
+        IsCountDownRunning = false;
     });
 }
