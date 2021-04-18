@@ -61,8 +61,8 @@ bot.on('message', (message) =>{
 
 bot.on('messageReactionAdd', (reaction) =>{
     //reaction.message.channel.send("jfioerzjfioer");
-    if (reaction.emoji.name == '😢')
-    {
+    // if (reaction.emoji.name == '😢')
+    // {
         if (reaction.message.member.voice?.channel)
         {
             reaction.message.member.voice.channel.join()
@@ -78,7 +78,7 @@ bot.on('messageReactionAdd', (reaction) =>{
                 returnMessage.delete({timeout: 3000});
             });
         }
-    }
+    //}
 })
 
 function Play(connection, url)
