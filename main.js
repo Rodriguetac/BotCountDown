@@ -13,6 +13,18 @@ var IsCountDownRunning = false;
 
 bot.login(Config.token);
 
+bot.on('voiceStateUpdate', (state) =>{
+    if (state.client.user.bot && state.member.id == bot.user.id && state.connection == null)
+    {
+        if (IsCountDownRunning)
+        {
+            IsCountDownRunning = false;
+        }
+    }else{
+        return;
+    }
+})
+
 bot.on('ready', () =>{
     console.log('Bot connecté');
 })
@@ -42,7 +54,7 @@ bot.on('message', (message) =>{
     {
         message.channel.send(new Discord.MessageEmbed()
                        .setTitle('Liste des commandes:')
-                       .addFields({ name: '?countdown ou ajoute une reaction 😢 à un message', value:'Le bot rejoint votre channel audio et lance un compte à rebours', inline: true}))
+                       .addFields({ name: '?countdown ou ajoute une reaction à un message', value:'Le bot rejoint votre channel audio et lance un compte à rebours', inline: true}))
         .then(returnMessage =>{
             returnMessage.delete({timeout:6000});
         });
@@ -63,6 +75,7 @@ bot.on('messageReactionAdd', (reaction) =>{
     //reaction.message.channel.send("jfioerzjfioer");
     // if (reaction.emoji.name == '😢')
     // {
+        if (reaction.message.author.bot) return;
         if (reaction.message.member.voice?.channel)
         {
             reaction.message.member.voice.channel.join()
