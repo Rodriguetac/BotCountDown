@@ -6,7 +6,7 @@ const bot = new Discord.Client();
 
 const streamOptions = {
     seek: 0,
-    volume: 0.8
+    volume: 0.2
 }
 
 var IsCountDownRunning = false;
@@ -76,6 +76,7 @@ bot.on('messageReactionAdd', (reaction) =>{
     // if (reaction.emoji.name == '😢')
     // {
         if (reaction.message.author.bot) return;
+        if (reaction.emoji.name == '✅') return;
         if (reaction.message.member.voice?.channel)
         {
             reaction.message.member.voice.channel.join()
