@@ -21,12 +21,32 @@ bot.on('voiceStateUpdate', (state) =>{
             IsCountDownRunning = false;
         }
     }else{
+        if (state.channel?.members.size == 1)
+            bot.voice.connections.first().disconnect();
+        //state.connection.disconnect();
         return;
     }
+    
+})
+
+bot.on('guildMemberUpdate', (oldMember, newMember) =>{
+    if (oldMember.id == bot.user.id && newMember.nickname)
+    {
+        channel = bot.guilds.cache.find(guild => guild.id == oldMember.guild.id).channels.cache.find(ch => ch.id == '837387352472420422')
+        channel.send('Je peux savoir qui t\'as permis de me renommer, sale malade')
+        user = bot.guilds.cache.find(guild => guild.id == oldMember.guild.id).members.cache.find(member => member.id == bot.user.id)
+        user.setNickname('BotCountDown')
+    }
+        //newMember
 })
 
 bot.on('ready', () =>{
     console.log('Bot connecté');
+    bot.guilds.cache.each((value, key) =>{
+        user = value.members.cache.find(member => member.id == bot.user.id)
+        if (user.nickname != 'BotCountDown')
+            user.setNickname('BotCountDown')
+    })
 })
 
 bot.on('message', (message) =>{
@@ -76,7 +96,8 @@ bot.on('messageReactionAdd', (reaction) =>{
     // if (reaction.emoji.name == '😢')
     // {
         if (reaction.message.author.bot) return;
-        if (reaction.emoji.name == '✅') return;
+        if (reaction.users.cache.last().bot ||
+            reaction.message.channel.name != 'musique') return;
         if (reaction.message.member.voice?.channel)
         {
             reaction.message.member.voice.channel.join()
@@ -111,7 +132,7 @@ function Play(connection, url)
     const dispatcher = connection.play(stream, streamOptions);
 
     dispatcher.on('finish', () => {
-        connection.disconnect();
+        //connection.disconnect();
         IsCountDownRunning = false;
     });
 }
